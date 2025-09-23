@@ -1,9 +1,11 @@
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, FlatList } from "react-native";
 import { Link, router } from "expo-router";
-import { useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { UserContext } from "../UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { User } from "../types";
+import { Product, User } from "../types";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { styles } from "../style";
 export default function Home() {
   const globalUser = useContext(UserContext);
   if (!globalUser) {
@@ -15,29 +17,33 @@ export default function Home() {
     setEmail(user?.email ? String(user.email) : "");
   }, []);
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>homeeeee</Text>
-      <Link href="/details">
-        <Text>Go to Details</Text>
-      </Link>
-      <Link href="/auth/Login">
-        <Text>Go to Login</Text>
-      </Link>
-      <Button title="Go to Fav" onPress={() => router.push("../fav")} />
-      <Button
-        title="Go to splash"
-        onPress={() => router.push("/auth/Splash")}
-      />
+  const [productsList, setProductsList] = useState<Product[]>([]);
+  const getProductsFromApi =  () => {
+  return fetch('https://dummyjson.com/products')
+    .then(response => response.json())
+    .then(json => {
+      setProductsList(json.products);
+      return json.products;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
 
-      <Text> from conext {user?.email}</Text>
-      <Text> from async {email}</Text>
-    </View>
+ useEffect(() => {
+  getProductsFromApi();
+ },[])
+  return (
+   <SafeAreaView style={styles.container} >  
+   <FlatList 
+    data={productsList}
+  renderItem={({ item }) =>{
+    console.log(item.id);
+    return (
+      <Text>{item.title}</Text>
+    );
+  }}
+   />
+   </SafeAreaView>
   );
 }

@@ -27,7 +27,7 @@ export default function Index() {
 
   useEffect(() => {
     if (!loading && (user?.isLogIn || storedEmail)) {
-      router.replace("/tabs");
+      router.replace("/(tabs)");
     }
   }, [loading, user?.isLogIn, storedEmail]);
 

@@ -13,8 +13,6 @@ export default function Layout() {
         name="index"
         options={{
           title: "Home",
-          tabBarLabel: "Home",
-          headerTitle: "Home",
           tabBarIcon: ({ color }) => (
             <Ionicons name="home" size={24} color={color} />
           ),
@@ -24,8 +22,6 @@ export default function Layout() {
         name="fav"
         options={{
           title: "Favorites",
-          tabBarLabel: "Favorites",
-          headerTitle: "Favorites",
           tabBarIcon: ({ color }) => (
             <Ionicons name="heart" size={24} color={color} />
           ),
@@ -35,8 +31,6 @@ export default function Layout() {
         name="profile"
         options={{
           title: "Profile",
-          tabBarLabel: "Profile",
-          headerTitle: "Profile",
           tabBarIcon: ({ color }) => (
             <Ionicons name="person" size={24} color={color} />
           ),

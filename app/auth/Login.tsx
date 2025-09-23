@@ -54,7 +54,7 @@ export default function Login() {
               const myObject = { email, name, phone, password, isLogIn: true };
               setUser(myObject);
               await AsyncStorage.setItem("user", JSON.stringify(myObject));
-              router.push("/tabs");
+              router.push("/(tabs)");
             },
           }}
         />
