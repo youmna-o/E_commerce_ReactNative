@@ -7,6 +7,8 @@ export default function Layout() {
       screenOptions={{
         tabBarActiveTintColor: "blue",
         tabBarInactiveTintColor: "gray",
+        tabBarStyle: { backgroundColor: "white" },
+        headerStyle: { backgroundColor: "white" },
       }}
     >
       <Tabs.Screen

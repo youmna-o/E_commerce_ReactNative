@@ -7,7 +7,11 @@ import { styles } from "./style";
 export default function RootLayout() {
   return (
     <UserProvider>
-      <Stack>
+      <Stack
+        screenOptions={{
+          contentStyle: { backgroundColor: "white" },
+        }}
+      >
         <Stack.Screen
           name="index"
           options={{
@@ -63,11 +67,3 @@ export default function RootLayout() {
     </UserProvider>
   );
 }
-//    ( <SafeAreaView style={{ flex: 1 }}> // must use flex 1 to fill the screen
-//     <View><Text style={{ fontSize: 20, fontWeight: 'bold' }}>Headerrrrrrrr</Text></View>
-//       <Stack />
-//           <View><Text style={{ fontSize: 20, fontWeight: 'bold' }}>fooooooot</Text></View>
-
-//     </SafeAreaView>
-//   );
-// }
