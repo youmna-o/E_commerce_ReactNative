@@ -8,6 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../style";
 import ProductCard from "../components/ProductCard";
 import { Chip } from "react-native-paper";
+
 export default function Home() {
   const globalUser = useContext(UserContext);
   if (!globalUser) {
@@ -20,7 +21,7 @@ export default function Home() {
   }, []);
 
   const [productsList, setProductsList] = useState<Product[]>([]);
-   const [beautyProductsList, setBeautyProductsList] = useState<Product[]>([]);
+  const [beautyProductsList, setBeautyProductsList] = useState<Product[]>([]);
   const [fragrancesProductsList, setFragrancesProductsList] = useState<
     Product[]
   >([]);
@@ -32,40 +33,39 @@ export default function Home() {
   );
 
   const [selectedFilter, setSelectedFilter] = useState("All");
-  const [selectedList,setSelectedList]=useState<Product[]>([]);
+  const [selectedList, setSelectedList] = useState<Product[]>([]);
 
   const filters = [
-    {  name: "All", category: "all" },
-    {  name: "Beauty", category: Category.Beauty },
-    {  name: "Fragrances", category: Category.Fragrances},
-    {  name: "Furniture", category: Category.Furniture},
-    {  name: "Groceries", category: Category.Groceries},
+    { name: "All", category: "all" },
+    { name: "Beauty", category: Category.Beauty },
+    { name: "Fragrances", category: Category.Fragrances },
+    { name: "Furniture", category: Category.Furniture },
+    { name: "Groceries", category: Category.Groceries },
   ];
 
-   const selectList = (filterName: string) => {
-      switch (filterName) {
-        case "All":
-          setSelectedList(productsList);
-          break;
-        case "Beauty":
-          setSelectedList(beautyProductsList);
-          break;
-        case "Fragrances":
-          setSelectedList(fragrancesProductsList);
-          break;
-        case "Furniture":
-          setSelectedList(furnitureProductsList);
-          break;
-        case "Groceries":
-          setSelectedList(groceriesProductsList);
-          break;
-        default:
-          setSelectedList(productsList);
-          break;
-      }
+  const selectList = (filterName: string) => {
+    switch (filterName) {
+      case "All":
+        setSelectedList(productsList);
+        break;
+      case "Beauty":
+        setSelectedList(beautyProductsList);
+        break;
+      case "Fragrances":
+        setSelectedList(fragrancesProductsList);
+        break;
+      case "Furniture":
+        setSelectedList(furnitureProductsList);
+        break;
+      case "Groceries":
+        setSelectedList(groceriesProductsList);
+        break;
+      default:
+        setSelectedList(productsList);
+        break;
+    }
+  };
 
-   }
-   
   const getProductsFromApi = () => {
     return fetch("https://dummyjson.com/products")
       .then((response) => response.json())
@@ -98,49 +98,51 @@ export default function Home() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { justifyContent: "flex-start", paddingTop: 20 },
+      ]}
+    >
       {/* Horizontal FlatList for chips */}
       <FlatList
         data={filters}
-        renderItem={({ item })=> (
-    <Chip
-      selected={selectedFilter === item.name}
-      onPress={() => {setSelectedFilter(item.name)
-        selectList(item.name)}
-      }
-      style={{
-        margin: 4,
-        width: 120,
-        height: 40, 
-        justifyContent: "center",
-        backgroundColor: selectedFilter === item.name ? styles.appBlue.color : 'lightgrey',
-      }}
-    >
-      {item.name}
-    </Chip>
+        renderItem={({ item }) => (
+          <Chip
+            selected={selectedFilter === item.name}
+            onPress={() => {
+              setSelectedFilter(item.name);
+              selectList(item.name);
+            }}
+            style={{
+              margin: 4,
+              width: 120,
+              height: 40,
+              justifyContent: "center",
+              backgroundColor:
+                selectedFilter === item.name
+                  ? styles.appBlue.color
+                  : "lightgrey",
+            }}
+          >
+            {item.name}
+          </Chip>
         )}
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 8 }}
+        contentContainerStyle={{ paddingLeft: 4, paddingRight: 16 }}
       />
 
       {/* Vertical FlatList for products */}
       <FlatList
+        style={{ marginTop: 16 }}
         data={selectedList}
         numColumns={2}
         renderItem={({ item }) => {
           console.log(item.id);
-          return (
-            <ProductCard
-              title={item.title}
-              price={item.price}
-              rating={item.rating}
-              category={item.category}
-              thumbnail={item.thumbnail}
-            ></ProductCard>
-          );
+          return <ProductCard product={item} />;
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 }

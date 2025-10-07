@@ -1,33 +1,45 @@
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Category } from "../types";
+import { Category, Product } from "../types";
 import { styles } from "../style";
 import { Ionicons } from "@expo/vector-icons";
+import { UserContext } from "../UserContext";
+
 export interface ProductCardProps {
-  title: string;
-  price: number;
-  rating: number;
-  thumbnail: string;
-  category: Category;
+  product: Product;
+  onPress?: () => void;
 }
 
-export default function ProductCard({
-  title,
-  price,
-  rating,
-  thumbnail,
-  category,
-}: ProductCardProps) {
+export default function ProductCard({ product, onPress }: ProductCardProps) {
+  const { title, price, rating, thumbnail, category } = product;
   const link = thumbnail;
-  const [isFavorite, setIsFavorite] = useState(false);
+
+  const userContext = useContext(UserContext);
+  if (!userContext) {
+    throw new Error("ProductCard must be used within a UserProvider");
+  }
+  const { favoriteProducts, addToFavorites, removeFromFavorites } = userContext;
+
+  // Check if this product is already in favorites
+  const isFavorite = favoriteProducts.some((fav) => fav.id === product.id);
+
+  const handleFavoritePress = async () => {
+    if (isFavorite) {
+      await removeFromFavorites(product.id);
+    } else {
+      await addToFavorites(product);
+    }
+  };
   return (
     <View style={style.card}>
       <View style={style.imageContainer}>
         <Image source={{ uri: link }} style={style.image} resizeMode="cover" />
-        <Pressable style={style.iconContainer}>
-          <Ionicons name="heart" size={24} color={ isFavorite? styles.appBlue.color:"white" }
-          onPress={()=>setIsFavorite(!isFavorite)}
+        <Pressable style={style.iconContainer} onPress={handleFavoritePress}>
+          <Ionicons
+            name={isFavorite ? "heart" : "heart-outline"}
+            size={24}
+            color={isFavorite ? styles.appBlue.color : "white"}
           />
         </Pressable>
       </View>

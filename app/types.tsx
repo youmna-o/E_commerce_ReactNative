@@ -11,72 +11,75 @@ export type UserContextType =
       user: User;
       setUser: React.Dispatch<React.SetStateAction<User>>;
       loading: boolean;
+      favoriteProducts: Product[];
+      setFavoriteProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+      addToFavorites: (product: Product) => Promise<void>;
+      removeFromFavorites: (productId: number) => Promise<void>;
     }
   | undefined;
 
-
 export interface Product {
-    id:                   number;
-    title:                string;
-    description:          string;
-    category:             Category;
-    price:                number;
-    discountPercentage:   number;
-    rating:               number;
-    stock:                number;
-    tags:                 string[];
-    brand?:               string;
-    sku:                  string;
-    weight:               number;
-    dimensions:           Dimensions;
-    warrantyInformation:  string;
-    shippingInformation:  string;
-    availabilityStatus:   AvailabilityStatus;
-    reviews:              Review[];
-    returnPolicy:         ReturnPolicy;
-    minimumOrderQuantity: number;
-    meta:                 Meta;
-    images:               string[];
-    thumbnail:            string;
+  id: number;
+  title: string;
+  description: string;
+  category: Category;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  stock: number;
+  tags: string[];
+  brand?: string;
+  sku: string;
+  weight: number;
+  dimensions: Dimensions;
+  warrantyInformation: string;
+  shippingInformation: string;
+  availabilityStatus: AvailabilityStatus;
+  reviews: Review[];
+  returnPolicy: ReturnPolicy;
+  minimumOrderQuantity: number;
+  meta: Meta;
+  images: string[];
+  thumbnail: string;
 }
 
 export enum AvailabilityStatus {
-    InStock = "In Stock",
-    LowStock = "Low Stock",
+  InStock = "In Stock",
+  LowStock = "Low Stock",
 }
 
 export enum Category {
-    Beauty = "beauty",
-    Fragrances = "fragrances",
-    Furniture = "furniture",
-    Groceries = "groceries",
+  Beauty = "beauty",
+  Fragrances = "fragrances",
+  Furniture = "furniture",
+  Groceries = "groceries",
 }
 
 export interface Dimensions {
-    width:  number;
-    height: number;
-    depth:  number;
+  width: number;
+  height: number;
+  depth: number;
 }
 
 export interface Meta {
-    createdAt: Date;
-    updatedAt: Date;
-    barcode:   string;
-    qrCode:    string;
+  createdAt: Date;
+  updatedAt: Date;
+  barcode: string;
+  qrCode: string;
 }
 
 export enum ReturnPolicy {
-    NoReturnPolicy = "No return policy",
-    The30DaysReturnPolicy = "30 days return policy",
-    The60DaysReturnPolicy = "60 days return policy",
-    The7DaysReturnPolicy = "7 days return policy",
-    The90DaysReturnPolicy = "90 days return policy",
+  NoReturnPolicy = "No return policy",
+  The30DaysReturnPolicy = "30 days return policy",
+  The60DaysReturnPolicy = "60 days return policy",
+  The7DaysReturnPolicy = "7 days return policy",
+  The90DaysReturnPolicy = "90 days return policy",
 }
 
 export interface Review {
-    rating:        number;
-    comment:       string;
-    date:          Date;
-    reviewerName:  string;
-    reviewerEmail: string;
+  rating: number;
+  comment: string;
+  date: Date;
+  reviewerName: string;
+  reviewerEmail: string;
 }
