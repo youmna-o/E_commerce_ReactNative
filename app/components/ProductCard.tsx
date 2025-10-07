@@ -5,30 +5,51 @@ import { Category, Product } from "../types";
 import { styles } from "../style";
 import { Ionicons } from "@expo/vector-icons";
 import { UserContext } from "../UserContext";
+import CustomButton from "./CustomButton";
+import AddToCartButton from "./AddToCartButton";
 
 export interface ProductCardProps {
   product: Product;
   onPress?: () => void;
+  showAddToFavButton?: boolean;
 }
 
-export default function ProductCard({ product, onPress }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  onPress,
+  showAddToFavButton = true,
+}: ProductCardProps) {
   const { title, price, rating, thumbnail, category } = product;
   const link = thumbnail;
 
-  const userContext = useContext(UserContext);
-  if (!userContext) {
-    throw new Error("ProductCard must be used within a UserProvider");
+  const globalUser = useContext(UserContext);
+  if (!globalUser) {
+    throw new Error("Login must be used within a UserProvider");
   }
-  const { favoriteProducts, addToFavorites, removeFromFavorites } = userContext;
+  const { favoriteProducts, addToFavorites, removeFromFavorites } = globalUser;
+  const { savedProducts, addToCart, removeFromCart } = globalUser;
 
   // Check if this product is already in favorites
   const isFavorite = favoriteProducts.some((fav) => fav.id === product.id);
+  const isSaved = savedProducts.some((saved) => saved.id === product.id);
 
   const handleFavoritePress = async () => {
     if (isFavorite) {
       await removeFromFavorites(product.id);
     } else {
       await addToFavorites(product);
+    }
+  };
+  const handleAddToCartPress = async () => {
+    if (isSaved) {
+    } else {
+      await addToCart(product);
+    }
+  };
+
+  const handleRemoveFromCartPress = async () => {
+    if (isSaved) {
+      await removeFromCart(product.id);
     }
   };
   return (
@@ -43,10 +64,18 @@ export default function ProductCard({ product, onPress }: ProductCardProps) {
           />
         </Pressable>
       </View>
-      <Text style={style.name}>{title}</Text>
+      <Text style={style.name} numberOfLines={1} ellipsizeMode="tail">
+        {title}
+      </Text>
       <Text style={style.category}>{category}</Text>
-      <Text>Rate: {rating}</Text>
       <Text style={style.price}>Price: ${price}</Text>
+
+      <AddToCartButton
+        CustomButtonProps={{
+          title: showAddToFavButton ? "Add to Cart" : "Remove",
+          onPress: showAddToFavButton ? handleAddToCartPress :handleRemoveFromCartPress,
+        }}
+      />
     </View>
   );
 }
@@ -92,6 +121,7 @@ const style = StyleSheet.create({
   category: {
     textAlign: "center",
     fontSize: 18,
+    padding: 4,
     fontWeight: "bold",
     alignContent: "center",
     color: styles.appBlue.color,
@@ -99,5 +129,6 @@ const style = StyleSheet.create({
   price: {
     fontSize: 16,
     fontWeight: "bold",
+    padding: 4,
   },
 });

@@ -15,6 +15,10 @@ export type UserContextType =
       setFavoriteProducts: React.Dispatch<React.SetStateAction<Product[]>>;
       addToFavorites: (product: Product) => Promise<void>;
       removeFromFavorites: (productId: number) => Promise<void>;
+      savedProducts: Product[];
+      setSavedProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+      addToCart: (product: Product) => Promise<void>;
+      removeFromCart: (productId: number) => Promise<void>;
     }
   | undefined;
 

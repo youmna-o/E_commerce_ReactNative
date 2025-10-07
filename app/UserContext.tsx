@@ -10,6 +10,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
+  const [savedProducts, setSavedProducts] = useState<Product[]>([]);
+
 
   useEffect(() => {
     const loadUser = async () => {
@@ -36,8 +38,22 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setLoading(false);
       }
     };
+
+    const loadSaved = async () => {
+      try {
+        const savedProducts = await AsyncStorage.getItem("cart");
+        if (savedProducts) {
+          setSavedProducts(JSON.parse(savedProducts));
+        }
+      } catch (error) {
+        console.error("Failed to load fav from storage", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     loadUser();
     loadFav();
+    loadSaved();
   }, []);
 
   const addToFavorites = async (product: Product) => {
@@ -55,6 +71,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     await AsyncStorage.setItem("fav", JSON.stringify(newFavs));
   };
 
+
+    const addToCart = async (product: Product) => {
+    if (!savedProducts.some((p) => p.id === product.id)) {
+      const newSaved = [...savedProducts, product];
+      //cerate a new array with the new product added
+      setSavedProducts(newSaved);
+      await AsyncStorage.setItem("cart", JSON.stringify(newSaved));
+    }
+  };
+
+  const removeFromCart= async (productId: number) => {
+    const newSaved = savedProducts.filter((p) => p.id !== productId);
+    setSavedProducts(newSaved);
+    await AsyncStorage.setItem("cart", JSON.stringify(newSaved));
+  };
   return (
     <UserContext.Provider
       value={{
@@ -65,6 +96,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setFavoriteProducts,
         addToFavorites,
         removeFromFavorites,
+        savedProducts,
+        setSavedProducts,
+        addToCart,
+        removeFromCart,
       }}
     >
       {children}

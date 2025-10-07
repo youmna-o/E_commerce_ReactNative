@@ -140,7 +140,8 @@ export default function Home() {
         numColumns={2}
         renderItem={({ item }) => {
           console.log(item.id);
-          return <ProductCard product={item} />;
+          return <ProductCard product={item} 
+          />;
         }}
       />
     </View>

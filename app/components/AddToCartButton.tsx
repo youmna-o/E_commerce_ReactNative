@@ -12,15 +12,15 @@ export default function CustomButton({ CustomButtonProps }: any) {
     <View
       style={{
         alignItems: "center",
-       flex: 1,
+        marginVertical: 8,
       }}
     >
       <Pressable
         style={{
           backgroundColor: styles.appBlue.color,
-          borderRadius: 10,
-          height: 50,
-          padding: 10,
+          borderRadius: 50,
+          height: 40,
+          
           width: "70%",
           justifyContent: "center",
           alignItems: "center",
@@ -31,8 +31,8 @@ export default function CustomButton({ CustomButtonProps }: any) {
           style={{
             color: "white",
             fontWeight: "bold",
-            fontSize: 20,
-           alignContent: "center",
+            fontSize: 18,
+            textAlign: "center",
           }}
         >
           {CustomButtonProps.title}
