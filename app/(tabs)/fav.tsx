@@ -3,6 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { View , Text,FlatList, Button} from "react-native";
 import { UserContext } from "../UserContext";
 import ProductCard from "../components/ProductCard";
+import { styles } from "../style";
+import NoNUserPage from "../components/NonUserPage";
 
 
 export default function Fav() {
@@ -17,7 +19,8 @@ export default function Fav() {
     setEmail(user?.email ? String(user.email) : "");
   }, []);
   return (
-    <View>
+    <View style={styles.container}>
+    { user?.email  ?
       <FlatList
         style={{ marginTop: 16 }}
           data={favoriteProducts}
@@ -29,8 +32,10 @@ export default function Fav() {
               product={item}
               ></ProductCard>
             );
-          }}
-        />
+          }} />
+         : (
+          <NoNUserPage title="You must be logged in to see your favorites" />
+        )}
     </View>
   );
 }

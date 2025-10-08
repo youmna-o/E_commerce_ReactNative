@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { Product, User, UserContextType } from "./types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Slot, router } from "expo-router";
 
 export const UserContext = createContext<UserContextType | undefined>(
   undefined
@@ -11,7 +12,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
   const [savedProducts, setSavedProducts] = useState<Product[]>([]);
-
 
   useEffect(() => {
     const loadUser = async () => {
@@ -71,8 +71,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     await AsyncStorage.setItem("fav", JSON.stringify(newFavs));
   };
 
-
-    const addToCart = async (product: Product) => {
+  const addToCart = async (product: Product) => {
     if (!savedProducts.some((p) => p.id === product.id)) {
       const newSaved = [...savedProducts, product];
       //cerate a new array with the new product added
@@ -81,11 +80,24 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const removeFromCart= async (productId: number) => {
+  const removeFromCart = async (productId: number) => {
     const newSaved = savedProducts.filter((p) => p.id !== productId);
     setSavedProducts(newSaved);
     await AsyncStorage.setItem("cart", JSON.stringify(newSaved));
   };
+
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem("user");
+      await AsyncStorage.removeItem("email");
+       router.push("/auth/Login");
+      
+      setUser(null);
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -100,6 +112,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setSavedProducts,
         addToCart,
         removeFromCart,
+        logout,
       }}
     >
       {children}

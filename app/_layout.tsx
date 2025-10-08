@@ -1,6 +1,4 @@
 import { Slot, Stack } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, Pressable, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { UserProvider } from "./UserContext";
 import { styles } from "./style";
@@ -61,6 +59,8 @@ export default function RootLayout() {
           name="(tabs)"
           options={{
             headerShown: false,
+            title: "Home",
+               headerTitleStyle: { color: "white" },
           }}
         />
       </Stack>

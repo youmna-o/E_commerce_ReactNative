@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import { StyleSheet, Text, View, Image, Pressable, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Category, Product } from "../types";
@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { UserContext } from "../UserContext";
 import CustomButton from "./CustomButton";
 import AddToCartButton from "./AddToCartButton";
+import { router } from "expo-router";
 
 export interface ProductCardProps {
   product: Product;
@@ -34,6 +35,21 @@ export default function ProductCard({
   const isSaved = savedProducts.some((saved) => saved.id === product.id);
 
   const handleFavoritePress = async () => {
+    if (!globalUser.user?.email) {
+      Alert.alert("Login Required", "Please log in to add items to favorites", [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Go to Login",
+          onPress: () => {
+             router.push("/auth/Login"); 
+          },
+        },
+      ]);
+      return;
+    }
     if (isFavorite) {
       await removeFromFavorites(product.id);
     } else {
@@ -41,6 +57,22 @@ export default function ProductCard({
     }
   };
   const handleAddToCartPress = async () => {
+    if (!globalUser.user?.email) {
+    Alert.alert("Login Required", "Please log in to add items to favorites", [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Go to Login",
+          onPress: () => {
+             router.push("/auth/Login"); 
+          },
+        },
+      ]);
+     
+      return;
+    }
     if (isSaved) {
     } else {
       await addToCart(product);
@@ -48,6 +80,10 @@ export default function ProductCard({
   };
 
   const handleRemoveFromCartPress = async () => {
+    if (!globalUser.user?.email) {
+      alert("Please log in to remove items from cart");
+      return;
+    }
     if (isSaved) {
       await removeFromCart(product.id);
     }
@@ -73,7 +109,9 @@ export default function ProductCard({
       <AddToCartButton
         CustomButtonProps={{
           title: showAddToFavButton ? "Add to Cart" : "Remove",
-          onPress: showAddToFavButton ? handleAddToCartPress :handleRemoveFromCartPress,
+          onPress: showAddToFavButton
+            ? handleAddToCartPress
+            : handleRemoveFromCartPress,
         }}
       />
     </View>

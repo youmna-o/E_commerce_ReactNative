@@ -1,5 +1,4 @@
 import { View, Text, Button, FlatList } from "react-native";
-import { Link, router } from "expo-router";
 import { use, useContext, useEffect, useState } from "react";
 import { UserContext } from "../UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";

@@ -31,7 +31,23 @@ export default function Login() {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.pageTitle}> Welcom To Login </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.pageTitle}> Welcom To Login </Text>
+          <Pressable onPress={() => {
+            setUser(null);
+             router.push("/(tabs)")
+          }
+          
+            }>
+            <Text style={[styles.miniTitle, { paddingLeft: 0 }]}> Skip</Text>
+          </Pressable>
+        </View>
 
         <CustomAuthImage></CustomAuthImage>
         <CustomTextInput
@@ -63,17 +79,7 @@ export default function Login() {
             router.push("/auth/Register");
           }}
         >
-          <Text
-            style={{
-              color: styles.appBlue.color,
-              fontSize: 20,
-              fontWeight: "bold",
-              paddingLeft: "60%",
-            }}
-          >
-            {" "}
-            Sign Up{" "}
-          </Text>
+          <Text style={styles.miniTitle}> Sign Up </Text>
         </Pressable>
       </View>
     </ScrollView>

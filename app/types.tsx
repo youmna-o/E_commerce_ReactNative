@@ -19,6 +19,7 @@ export type UserContextType =
       setSavedProducts: React.Dispatch<React.SetStateAction<Product[]>>;
       addToCart: (product: Product) => Promise<void>;
       removeFromCart: (productId: number) => Promise<void>;
+      logout: () => Promise<void>;
     }
   | undefined;
 

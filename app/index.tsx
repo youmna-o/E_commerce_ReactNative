@@ -26,10 +26,10 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    if (!loading && (user?.isLogIn || storedEmail)) {
+    if (!loading && user?.isLogIn) {
       router.replace("/(tabs)");
     }
-  }, [loading, user?.isLogIn, storedEmail]);
+  }, [loading, user?.isLogIn]);
 
   if (loading) {
     return (
