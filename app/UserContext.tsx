@@ -12,6 +12,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
   const [savedProducts, setSavedProducts] = useState<Product[]>([]);
+  const [receipt , setReceipt]=useState<Number>(0);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -113,6 +114,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         addToCart,
         removeFromCart,
         logout,
+        receipt,
+        setReceipt,
       }}
     >
       {children}

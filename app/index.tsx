@@ -5,6 +5,7 @@ import Login from "./auth/Login";
 import { UserContext } from "./UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 export default function Index() {
   const globalUser = useContext(UserContext);
   if (!globalUser) {

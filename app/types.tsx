@@ -20,6 +20,8 @@ export type UserContextType =
       addToCart: (product: Product) => Promise<void>;
       removeFromCart: (productId: number) => Promise<void>;
       logout: () => Promise<void>;
+      receipt:Number,
+      setReceipt: React.Dispatch<React.SetStateAction<Number>>;
     }
   | undefined;
 

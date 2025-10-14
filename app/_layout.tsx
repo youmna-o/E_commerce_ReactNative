@@ -29,15 +29,7 @@ export default function RootLayout() {
             ),
           }}
         />
-        <Stack.Screen
-          name="auth/Register"
-          options={{
-            title: "Register",
-            headerStyle: { backgroundColor: styles.appBlue.color },
-            headerTitleStyle: { color: "white" },
-            //  headerShown: false,
-          }}
-        />
+       
         <Stack.Screen name="fav" />
         {/* if you want to customize the header title */}
         <Stack.Screen
@@ -55,6 +47,15 @@ export default function RootLayout() {
             headerTitleStyle: { color: "white" },
           }}
         />
+         <Stack.Screen
+          name="auth/Register"
+          options={{
+            title: "Register",
+            headerStyle: { backgroundColor: styles.appBlue.color },
+            headerTitleStyle: { color: "white" },
+            //  headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="(tabs)"
           options={{
@@ -63,6 +64,14 @@ export default function RootLayout() {
                headerTitleStyle: { color: "white" },
           }}
         />
+         <Stack.Screen
+          name="checkout"
+          options={{
+            title: "Checkout",
+               headerTitleStyle: { color: "white" },
+          }}
+        />
+         
       </Stack>
     </UserProvider>
   );
