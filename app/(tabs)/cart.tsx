@@ -1,6 +1,6 @@
 import { Link, router } from "expo-router";
 import { useContext, useEffect, useState } from "react";
-import { View, Text, FlatList, Button } from "react-native";
+import { View, Text, FlatList, Button, ScrollView } from "react-native";
 import { UserContext } from "../UserContext";
 import ProductCard from "../components/ProductCard";
 import { styles } from "../style";
@@ -22,44 +22,57 @@ export default function cart() {
   return (
     <View style={styles.container}>
       {user?.email ? (
-        <View>
-          <FlatList
-            style={{ marginTop: 16 }}
-            data={savedProducts}
-            numColumns={2}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => {
-              console.log(item.id);
-              return <ProductCard product={item} showAddToFavButton={false} />;
-            }}
-          />
-          <View style={{ height: 20, flexDirection: "row" }}>
-            <Text
-            
+        <FlatList
+          style={{ marginTop: 16 }}
+          data={savedProducts}
+          numColumns={2}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => {
+            console.log(item.id);
+            return <ProductCard product={item} showAddToFavButton={false} />;
+          }}
+          ListFooterComponent={
+            <View
               style={{
-                fontSize: 18,
-                fontWeight: "bold",
-                flex: 1,
-                alignSelf: "center",
-                alignContent: "center",
+                justifyContent: "space-between",
+                height: 60,
+                flexDirection: "row",
+                marginTop: 16,
+                marginBottom: 20,
+              
               }}
             >
-              Total:${savedProducts.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
-            </Text>
+              <Text
+                style={{
+                  paddingHorizontal: 40,
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  flex: 1,
+                  alignSelf: "center",
+                  alignContent: "center",
+                  color: styles.appBlue.color,
+                }}
+              >
+                Total:$
+                {savedProducts
+                  .reduce((sum, item) => sum + item.price, 0)
+                  .toFixed(2)}
+              </Text>
 
-            <CustomButton
-              CustomButtonProps={{
-                title: "Checkout",
-                onPress: () => {
-                  setReceipt(
-                    savedProducts.reduce((sum, item) => sum + item.price, 0)
-                  );
-                  router.push("/checkout");
-                },
-              }}
-            />
-          </View>
-        </View>
+              <CustomButton
+                CustomButtonProps={{
+                  title: "Checkout",
+                  onPress: () => {
+                    setReceipt(
+                      savedProducts.reduce((sum, item) => sum + item.price, 0)
+                    );
+                    router.push("/checkout");
+                  },
+                }}
+              />
+            </View>
+          }
+        />
       ) : (
         <NonUserPage title="You must be logged in to see your cart" />
       )}

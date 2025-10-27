@@ -8,6 +8,8 @@ import { UserContext } from "../UserContext";
 import CustomButton from "./CustomButton";
 import AddToCartButton from "./AddToCartButton";
 import { router } from "expo-router";
+import { Button } from "react-native-paper";
+import AddQuantityButton from "./AddQuantityButton";
 
 export interface ProductCardProps {
   product: Product;
@@ -44,7 +46,7 @@ export default function ProductCard({
         {
           text: "Go to Login",
           onPress: () => {
-             router.push("/auth/Login"); 
+            router.push("/auth/Login");
           },
         },
       ]);
@@ -58,7 +60,7 @@ export default function ProductCard({
   };
   const handleAddToCartPress = async () => {
     if (!globalUser.user?.email) {
-    Alert.alert("Login Required", "Please log in to add items to favorites", [
+      Alert.alert("Login Required", "Please log in to add items to favorites", [
         {
           text: "Cancel",
           style: "cancel",
@@ -66,11 +68,11 @@ export default function ProductCard({
         {
           text: "Go to Login",
           onPress: () => {
-             router.push("/auth/Login"); 
+            router.push("/auth/Login");
           },
         },
       ]);
-     
+
       return;
     }
     if (isSaved) {
@@ -114,6 +116,9 @@ export default function ProductCard({
             : handleRemoveFromCartPress,
         }}
       />
+      {!showAddToFavButton && (
+       <AddQuantityButton/>
+      )}
     </View>
   );
 }
